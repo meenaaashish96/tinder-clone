@@ -1,37 +1,33 @@
-name: Deploy React App to S3
+name: Deploy Expo Web to S3
 
 on:
   push:
     branches:
-      - main  # Change this if your default branch is 'master'
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Ensure this matches your project requirement
+          node-version: '18'
 
-      # 3. Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # 4. Build the React Application
-      # This generates the 'build' folder containing your static files
-      - name: Build Project
-        run: npm run build
+      # FIX: We use 'npx expo export' instead of 'npm run build'
+      # This creates the static files needed for S3
+      - name: Build Expo Web
+        run: npx expo export --platform web
         env:
-          CI: false # Prevents build failure on warnings
+          CI: false
 
-      # 5. Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -39,7 +35,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # 6. Deploy to S3
-      # The '--delete' flag removes old files in the bucket that are no longer in the build
+      # FIX: Expo outputs to 'dist' (SDK 50+) or 'web-build' (Older SDKs)
+      # We check which one exists and deploy that.
       - name: Sync to S3
-        run: aws s3 sync build/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
+        run: |
+          if [ -d "dist" ]; then
+            aws s3 sync dist/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
+          elif [ -d "web-build" ]; then
+            aws s3 sync web-build/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
+          else
+            echo "Error: Could not find build folder (dist or web-build)"
+            exit 1
+          fi
