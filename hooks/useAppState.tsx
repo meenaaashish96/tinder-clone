@@ -1,13 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { createContext, useContext, useState } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
 
 // ==========================================
 // CONFIGURATION
 // ==========================================
 // Android Emulator uses 10.0.2.2, iOS uses localhost.
 // If using a physical device, use your computer's LAN IP (e.g., http://192.168.1.5:8000/api)
-const BASE_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8000/api' : 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://13.60.92.39/api';
 const GEMINI_API_KEY = ""; // 🔴 PASTE YOUR GOOGLE GEMINI API KEY HERE
 
 // ==========================================
