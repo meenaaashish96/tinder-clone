@@ -192,7 +192,7 @@ export default function MainScreen() {
     <SafeAreaView style={styles.appContainer}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       
-      {/* Header is now ALWAYS visible */}
+      {/* Header */}
       <View style={styles.topHeader}>
         <Flame color="#ec4899" fill="#ec4899" size={28} />
         <Text style={styles.topHeaderTitle}>tinder</Text>
@@ -255,8 +255,21 @@ const styles = StyleSheet.create({
   logoutButton: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 20 },
   logoutText: { color: '#6b7280', fontWeight: '600', fontSize: 14 },
 
-  // Card Styles
-  cardContainer: { width: SCREEN_WIDTH - 20, height: '85%', borderRadius: 20, position: 'absolute', alignSelf: 'center', marginTop: 10, backgroundColor: '#000', elevation: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 5 },
+  // Card Styles - Adjusted Height
+  cardContainer: { 
+    width: SCREEN_WIDTH - 20, 
+    height: '78%', // Reduced from 85% to fix overlap
+    borderRadius: 20, 
+    position: 'absolute', 
+    alignSelf: 'center', 
+    marginTop: 10, 
+    backgroundColor: '#000', 
+    elevation: 8, 
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.2, 
+    shadowRadius: 5 
+  },
   cardImage: { width: '100%', height: '100%', borderRadius: 20 },
   cardGradient: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', justifyContent: 'flex-end', padding: 20, borderRadius: 20 },
   cardName: { fontSize: 32, fontWeight: '800', color: '#FFF' },
@@ -271,7 +284,15 @@ const styles = StyleSheet.create({
   paginationDotActive: { backgroundColor: '#FFF' },
   paginationDotInactive: { backgroundColor: 'rgba(255,255,255,0.3)' },
   
-  buttonRow: { position: 'absolute', bottom: 30, flexDirection: 'row', gap: 40, alignSelf: 'center' },
+  // Button Row - Adjusted Z-Index
+  buttonRow: { 
+    position: 'absolute', 
+    bottom: 20, // Lowered slightly
+    flexDirection: 'row', 
+    gap: 40, 
+    alignSelf: 'center',
+    zIndex: 100 // Ensures buttons are above everything
+  },
   actionButton: { backgroundColor: '#FFF', borderRadius: 50, justifyContent: 'center', alignItems: 'center', borderWidth: 1, elevation: 5, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4 },
   aiButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#7c3aed', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 20, alignSelf: 'flex-start', gap: 6 },
   aiButtonText: { color: '#FFF', fontWeight: 'bold', fontSize: 12 },
